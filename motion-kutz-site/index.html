@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Motion Kutz Barbershop — Denver, CO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&family=Archivo+Black&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── TOKENS ─── */
+    :root {
+      --bg:        #0d0d0d;
+      --surface:   #1a1a1a;
+      --surface2:  #242424;
+      --accent:    #00f0ff;
+      --accent2:   #ff006e;
+      --text:      #f0f0f0;
+      --muted:     #888;
+      --border:    rgba(0,240,255,.12);
+      --font-display: 'Bebas Neue', 'Archivo Black', sans-serif;
+      --font-body:    'Inter', sans-serif;
+      --radius:    8px;
+      --transition: .25s ease;
+    }
+
+    /* ─── RESET ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── HEXAGON SVG BACKGROUND PATTERN ─── */
+    .hex-bg {
+      position: relative;
+    }
+    .hex-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='92' viewBox='0 0 80 92'%3E%3Cpolygon points='40,2 78,22 78,62 40,82 2,62 2,22' fill='none' stroke='%2300f0ff' stroke-width='.6' stroke-opacity='.08'/%3E%3C/svg%3E");
+      background-size: 80px 92px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .9rem 2rem;
+      background: rgba(13,13,13,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: .08em;
+      color: var(--accent);
+    }
+    .nav-logo span { color: var(--text); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: .85rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .btn {
+      display: inline-block;
+      padding: .55rem 1.4rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: .85rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .btn-accent {
+      background: var(--accent);
+      color: #000;
+    }
+    .btn-accent:hover {
+      background: #fff;
+      color: #000;
+      box-shadow: 0 0 20px rgba(0,240,255,.4);
+    }
+    .btn-outline {
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      background: transparent;
+    }
+    .btn-outline:hover {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 20px rgba(0,240,255,.35);
+    }
+    .nav-book { display: block; }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      transition: all var(--transition);
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem 3rem;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, #0d1f2e 0%, var(--bg) 70%);
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='92' viewBox='0 0 80 92'%3E%3Cpolygon points='40,2 78,22 78,62 40,82 2,62 2,22' fill='none' stroke='%2300f0ff' stroke-width='.8' stroke-opacity='.07'/%3E%3C/svg%3E");
+      background-size: 80px 92px;
+      z-index: 0;
+    }
+    /* glowing orbs */
+    #hero::after {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,240,255,.06) 0%, transparent 70%);
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+    }
+    .hero-eyebrow {
+      font-size: .8rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 14vw, 11rem);
+      line-height: .92;
+      letter-spacing: .03em;
+      color: var(--text);
+      text-shadow: 0 0 60px rgba(0,240,255,.18);
+      margin-bottom: .4rem;
+    }
+    .hero-title .accent { color: var(--accent); }
+    .hero-sub {
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 3.5vw, 2rem);
+      letter-spacing: .18em;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+    .hero-tagline {
+      font-size: 1rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+      margin-bottom: 2.5rem;
+      text-transform: uppercase;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      color: var(--muted);
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    .hero-scroll svg { width: 20px; opacity: .5; }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── SECTION SHELLS ─── */
+    section { padding: 5rem 2rem; }
+    .section-label {
+      font-size: .75rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .6rem;
+      font-weight: 500;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      letter-spacing: .04em;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* ─── ABOUT ─── */
+    #about {
+      background: var(--surface);
+    }
+    #about .hex-bg::before { opacity: .6; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .about-text p {
+      color: #bbb;
+      margin-bottom: 1rem;
+      line-height: 1.75;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .stat-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+      transition: border-color var(--transition);
+    }
+    .stat-card:hover { border-color: rgba(0,240,255,.4); }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      color: var(--accent);
+      line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-size: .78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-top: .3rem;
+    }
+
+    /* ─── SERVICES ─── */
+    #services { background: var(--bg); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2.5rem;
+    }
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.6rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: .7rem;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,240,255,.04) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .service-card:hover { border-color: rgba(0,240,255,.35); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,240,255,.08); }
+    .service-card:hover::before { opacity: 1; }
+    .service-name {
+      font-weight: 600;
+      font-size: .95rem;
+      line-height: 1.3;
+    }
+    .service-meta {
+      display: flex;
+      gap: .8rem;
+      font-size: .8rem;
+      color: var(--muted);
+    }
+    .service-price {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .service-card .btn {
+      margin-top: auto;
+      text-align: center;
+      font-size: .8rem;
+      padding: .45rem 1rem;
+    }
+
+    /* ─── GALLERY ─── */
+    #gallery { background: var(--surface); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--surface2);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.07); }
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay svg { width: 36px; color: #fff; }
+    /* placeholder tiles */
+    .gallery-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      color: var(--muted);
+    }
+    .gallery-placeholder .hex-icon {
+      width: 48px; height: 48px;
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 1.5;
+      opacity: .3;
+    }
+    .gallery-placeholder span {
+      font-size: .75rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .placeholder-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0,240,255,.06);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      height: 100%;
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    #testimonials { background: var(--bg); }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2.5rem;
+    }
+    .review-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+      transition: border-color var(--transition);
+    }
+    .review-card:hover { border-color: rgba(0,240,255,.3); }
+    .stars { color: #ffc107; font-size: 1rem; letter-spacing: .1em; }
+    .review-text {
+      color: #bbb;
+      font-size: .93rem;
+      line-height: 1.7;
+      flex: 1;
+    }
+    .review-author {
+      font-weight: 600;
+      font-size: .85rem;
+      color: var(--text);
+    }
+    .review-source {
+      font-size: .72rem;
+      color: var(--muted);
+      letter-spacing: .05em;
+    }
+
+    /* ─── HOURS ─── */
+    #hours { background: var(--surface); }
+    .hours-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 2.5rem;
+      align-items: start;
+    }
+    .hours-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .hours-table tr {
+      border-bottom: 1px solid var(--border);
+    }
+    .hours-table tr:last-child { border-bottom: none; }
+    .hours-table td {
+      padding: .75rem 0;
+      font-size: .9rem;
+    }
+    .hours-table td:first-child { color: var(--muted); }
+    .hours-table td:last-child { text-align: right; font-weight: 500; }
+    .hours-table .closed { color: var(--muted); }
+    .hours-table .today td { color: var(--accent); }
+    .map-container {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .map-container iframe {
+      width: 100%;
+      height: 300px;
+      display: block;
+      filter: invert(1) hue-rotate(180deg) brightness(.85) contrast(.9);
+    }
+    .location-info {
+      margin-top: 1rem;
+    }
+    .location-info a {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      color: var(--accent);
+      font-size: .9rem;
+      font-weight: 500;
+      transition: opacity var(--transition);
+    }
+    .location-info a:hover { opacity: .75; }
+    .location-info svg { width: 16px; }
+
+    /* ─── BOOKING ─── */
+    #booking {
+      background: var(--bg);
+      text-align: center;
+    }
+    .booking-header {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    .booking-note {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-top: .5rem;
+    }
+    .booking-frame {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .booking-frame iframe {
+      width: 100%;
+      height: 700px;
+      display: block;
+      border: none;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #080808;
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: .08em;
+      color: var(--accent);
+    }
+    .footer-logo small {
+      display: block;
+      font-family: var(--font-body);
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: .2rem;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      list-style: none;
+    }
+    .footer-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      color: var(--muted);
+      font-size: .88rem;
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-links svg { width: 16px; flex-shrink: 0; }
+    .footer-copy {
+      text-align: right;
+      font-size: .75rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ─── SCROLL FADE-IN ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── MEDIA QUERIES ─── */
+    @media (max-width: 768px) {
+      nav { padding: .8rem 1.2rem; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(13,13,13,.98); padding: 1.5rem; gap: 1.2rem; border-bottom: 1px solid var(--border); }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .nav-book { display: none; }
+
+      .about-grid,
+      .hours-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+
+      .footer-inner { grid-template-columns: 1fr; text-align: center; }
+      .footer-copy { text-align: center; }
+      .footer-links { align-items: center; }
+
+      section { padding: 3.5rem 1.2rem; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-ctas { flex-direction: column; align-items: center; }
+      .hero-ctas .btn { width: 100%; text-align: center; max-width: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">MOTION<span> KUTZ</span></a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#hours">Hours</a></li>
+    <li><a href="#booking">Book</a></li>
+    <li>
+      <a class="btn btn-accent" href="https://booksy.com/en-us/1541995_motion-kutz_barber-shop_1568088_denver" target="_blank" rel="noopener">
+        Book Now
+      </a>
+    </li>
+  </ul>
+  <a class="btn btn-accent nav-book" href="https://booksy.com/en-us/1541995_motion-kutz_barber-shop_1568088_denver" target="_blank" rel="noopener">Book Now</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════ HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Denver's Premier Fade Specialist</p>
+    <h1 class="hero-title">MOTION<br><span class="accent">KUTZ</span></h1>
+    <p class="hero-sub">Featuring ChubzBlendzz</p>
+    <p class="hero-tagline">Denver's Sharpest Fades &nbsp;·&nbsp; Highlands, CO</p>
+    <div class="hero-ctas">
+      <a class="btn btn-accent" href="https://booksy.com/en-us/1541995_motion-kutz_barber-shop_1568088_denver" target="_blank" rel="noopener">Book Now</a>
+      <a class="btn btn-outline" href="tel:+17207018104">Call (720) 701-8104</a>
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    scroll
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ ABOUT -->
+<section id="about">
+  <div class="container hex-bg">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p class="section-label">Our Story</p>
+        <h2 class="section-title">Built Different,<br>Cut Sharp</h2>
+        <p>Motion Kutz is a solo-barber studio tucked into Denver's Highlands neighborhood — a space designed to feel like nothing else in the city. Step inside and you're greeted by hexagonal LED ceiling lights and floor-to-ceiling manga and comic collage walls. The aesthetic isn't an accident; it's the whole vibe.</p>
+        <p>ChubzBlendzz brings serious craft to every chair: clean fades, precision lineups, and freestyle designs that hit different. Whether you're a first-timer or a regular, you leave looking and feeling your best.</p>
+        <p>Rated 4.8 stars on Google with 21+ reviews from real Denver heads — the reputation speaks for itself. Come see why Motion Kutz is quickly becoming the go-to shop in the Highlands.</p>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-card">
+          <span class="stat-num">4.8</span>
+          <span class="stat-label">Stars on Google</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">21+</span>
+          <span class="stat-label">Reviews</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">5</span>
+          <span class="stat-label">Services Offered</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">1</span>
+          <span class="stat-label">Master Barber</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ SERVICES -->
+<section id="services">
+  <div class="container">
+    <p class="section-label reveal">What We Offer</p>
+    <h2 class="section-title reveal">Services &amp; Pricing</h2>
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <p class="service-name">Regular Haircut</p>
+        <div class="service-price">$35</div>
+        <div class="service-meta">
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:-2px;margin-right:3px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            30 min
+          </span>
+        </div>
+        <a class="btn btn-outline" href="https://booksy.com/en-us/1541995_motion-kutz_barber-shop_1568088_denver" target="_blank" rel="noopener">Book This</a>
+      </div>
+
+      <div class="service-card reveal">
+        <p class="service-name">Regular Haircut + Beard</p>
+        <div class="service-price">$40</div>
+        <div class="service-meta">
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:-2px;margin-right:3px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            45 min
+          </span>
+        </div>
+        <a class="btn btn-outline" href="https://booksy.com/en-us/1541995_motion-kutz_barber-shop_1568088_denver" target="_blank" rel="noopener">Book This</a>
+      </div>
+
+      <div class="service-card reveal">
+        <p class="service-name">Haircut + Freestyle Design</p>
+        <div class="service-price">$35</div>
+        <div class="service-meta">
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:-2px;margin-right:3px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            50 min
+          </span>
+        </div>
+        <a class="btn btn-outline" href="https://booksy.com/en-us/1541995_motion-kutz_barber-shop_1568088_denver" target="_blank" rel="noopener">Book This</a>
+      </div>
+
+      <div class="service-card reveal">
+        <p class="service-name">Haircut + Design + Eyebrows</p>
+        <div class="service-price">$35</div>
+        <div class="service-meta">
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:-2px;margin-right:3px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            50 min
+          </span>
+        </div>
+        <a class="btn btn-outline" href="https://booksy.com/en-us/1541995_motion-kutz_barber-shop_1568088_denver" target="_blank" rel="noopener">Book This</a>
+      </div>
+
+      <div class="service-card reveal">
+        <p class="service-name">Kids Haircut</p>
+        <div class="service-price">$30</div>
+        <div class="service-meta">
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:-2px;margin-right:3px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            1 hr
+          </span>
+        </div>
+        <a class="btn btn-outline" href="https://booksy.com/en-us/1541995_motion-kutz_barber-shop_1568088_denver" target="_blank" rel="noopener">Book This</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <p class="section-label reveal">The Work</p>
+    <h2 class="section-title reveal">Gallery</h2>
+    <div class="gallery-grid">
+
+      <!-- Real photo slots — add img/cut-1.jpg etc. to make these appear -->
+      <div class="gallery-item reveal">
+        <img src="img/cut-1.jpg" alt="Haircut by ChubzBlendzz" onerror="this.style.display='none'" />
+        <div class="gallery-overlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="gallery-placeholder">
+          <svg class="hex-icon" viewBox="0 0 100 116"><polygon points="50,5 95,28 95,88 50,111 5,88 5,28"/></svg>
+          <span>Coming Soon</span>
+        </div>
+      </div>
+
+      <div class="gallery-item reveal">
+        <img src="img/shop-1.jpg" alt="Motion Kutz Interior" onerror="this.style.display='none'" />
+        <div class="gallery-overlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="gallery-placeholder">
+          <svg class="hex-icon" viewBox="0 0 100 116"><polygon points="50,5 95,28 95,88 50,111 5,88 5,28"/></svg>
+          <span>Coming Soon</span>
+        </div>
+      </div>
+
+      <!-- Placeholder tiles -->
+      <div class="gallery-item reveal">
+        <div class="gallery-placeholder">
+          <svg class="hex-icon" viewBox="0 0 100 116"><polygon points="50,5 95,28 95,88 50,111 5,88 5,28"/></svg>
+          <span>Coming Soon</span>
+        </div>
+      </div>
+
+      <div class="gallery-item reveal">
+        <div class="gallery-placeholder">
+          <svg class="hex-icon" viewBox="0 0 100 116"><polygon points="50,5 95,28 95,88 50,111 5,88 5,28"/></svg>
+          <span>Coming Soon</span>
+        </div>
+      </div>
+
+      <div class="gallery-item reveal">
+        <div class="gallery-placeholder">
+          <svg class="hex-icon" viewBox="0 0 100 116"><polygon points="50,5 95,28 95,88 50,111 5,88 5,28"/></svg>
+          <span>Coming Soon</span>
+        </div>
+      </div>
+
+      <div class="gallery-item reveal">
+        <div class="gallery-placeholder">
+          <svg class="hex-icon" viewBox="0 0 100 116"><polygon points="50,5 95,28 95,88 50,111 5,88 5,28"/></svg>
+          <span>Coming Soon</span>
+        </div>
+      </div>
+
+    </div>
+    <p style="text-align:center;margin-top:1.5rem;font-size:.82rem;color:var(--muted)">
+      Follow <a href="https://www.instagram.com/chubzblendzz/" target="_blank" rel="noopener" style="color:var(--accent)">@chubzblendzz</a> on Instagram for fresh cuts daily.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <p class="section-label reveal">What People Say</p>
+    <h2 class="section-title reveal">Real Reviews</h2>
+    <div class="reviews-grid">
+
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Hands down one of the best barbers around. The fade was clean, lines were sharp, and the whole experience felt top tier."</p>
+        <div>
+          <p class="review-author">Cruz</p>
+          <p class="review-source">Google Review</p>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Best in town. The atmosphere is clean, modern, and comfortable — and the barbers truly know their craft."</p>
+        <div>
+          <p class="review-author">Ivan Adame</p>
+          <p class="review-source">Google Review</p>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Nice shop, chill atmosphere, good prices and great talent! Gabe hooked it up — found my new barber."</p>
+        <div>
+          <p class="review-author">Josh Lopez</p>
+          <p class="review-source">Google Review</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ HOURS & LOCATION -->
+<section id="hours">
+  <div class="container">
+    <p class="section-label reveal">Find Us</p>
+    <h2 class="section-title reveal">Hours &amp; Location</h2>
+    <div class="hours-grid">
+      <div class="reveal">
+        <table class="hours-table">
+          <tr><td>Monday</td><td>10:00 AM – 7:00 PM</td></tr>
+          <tr><td>Tuesday</td><td>10:00 AM – 7:00 PM</td></tr>
+          <tr><td>Wednesday</td><td>10:00 AM – 7:00 PM</td></tr>
+          <tr><td>Thursday</td><td>10:00 AM – 7:00 PM</td></tr>
+          <tr><td>Friday</td><td>10:00 AM – 7:00 PM</td></tr>
+          <tr><td>Saturday</td><td>10:00 AM – 7:00 PM</td></tr>
+          <tr><td>Sunday</td><td class="closed">Closed</td></tr>
+        </table>
+        <div class="location-info" style="margin-top:1.5rem">
+          <a href="https://www.google.com/maps/place/5265+W+48th+Ave,+Denver,+CO+80212" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            5265 W 48th Ave, Denver, CO 80212
+          </a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="map-container">
+          <iframe
+            src="https://maps.google.com/maps?q=5265+W+48th+Ave,+Denver,+CO+80212&output=embed&z=16"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Motion Kutz location"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ BOOKING -->
+<section id="booking">
+  <div class="container">
+    <div class="booking-header reveal">
+      <p class="section-label">Reserve Your Spot</p>
+      <h2 class="section-title">Book Your Cut</h2>
+      <p class="booking-note">Powered by Booksy — real availability, real bookings.</p>
+    </div>
+    <div class="booking-frame reveal">
+      <iframe
+        src="https://booksy.com/widget-2024/index.html?realm=marketplace&country=us&language=en&id=1541995&initial_provider_id=1568088"
+        loading="lazy"
+        title="Book at Motion Kutz via Booksy"
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-logo">MOTION KUTZ<small>Featuring ChubzBlendzz</small></p>
+    </div>
+    <ul class="footer-links">
+      <li>
+        <a href="tel:+17207018104">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.79a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          (720) 701-8104
+        </a>
+      </li>
+      <li>
+        <a href="https://www.instagram.com/chubzblendzz/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          @chubzblendzz
+        </a>
+      </li>
+      <li>
+        <a href="https://www.google.com/maps/place/5265+W+48th+Ave,+Denver,+CO+80212" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          5265 W 48th Ave, Denver, CO 80212
+        </a>
+      </li>
+    </ul>
+    <div class="footer-copy">
+      <p>&copy; 2025 Motion Kutz Barbershop</p>
+      <p style="margin-top:.3rem">Denver, CO &nbsp;·&nbsp; All rights reserved</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Hamburger menu
+  const ham = document.getElementById('hamburger');
+  const nav = document.getElementById('nav-links');
+  ham.addEventListener('click', () => nav.classList.toggle('open'));
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+
+  // ── Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // ── Highlight today's hours row
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const today = days[new Date().getDay()];
+  document.querySelectorAll('.hours-table tr').forEach(row => {
+    if (row.cells[0] && row.cells[0].textContent.trim() === today) {
+      row.classList.add('today');
+    }
+  });
+</script>
+
+</body>
+</html>
